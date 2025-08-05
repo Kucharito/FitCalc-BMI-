@@ -4,21 +4,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/topAppBar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            android:title="FitCalc"
-            android:titleTextColor="@android:color/white"
-            app:layout_scrollFlags="scroll|enterAlways"/>
 
         <!-- Tu sa budú prepínať fragmenty -->
         <FrameLayout
             android:id="@+id/fragment_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="?attr/actionBarSize"
             android:layout_above="@id/bottom_navigation" />
 
         <!-- Spodné menu -->
