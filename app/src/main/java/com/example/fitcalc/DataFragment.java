@@ -46,6 +46,16 @@ public class DataFragment extends Fragment {
 
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences("FitCalcPrefs", MODE_PRIVATE);
 
+        String savedWeight = sharedPreferences.getString("inputWeight", "");
+        String savedHeight = sharedPreferences.getString("inputHeight", "");
+        String savedAge = sharedPreferences.getString("inputAge", "");
+
+        // Obnovenie vstupných polí z uložených hodnôt
+        vaha.setText(savedWeight);
+        vyska.setText(savedHeight);
+        vek.setText(savedAge);
+
+
         // Obnovenie posledného BMI pri štarte aplikácie
         float lastBMI = sharedPreferences.getFloat("lastBMI", 0.0f);
         String lastBMItext = sharedPreferences.getString("lastBMItext", "Nebol vypočítaný BMI.");
@@ -79,8 +89,18 @@ public class DataFragment extends Fragment {
                 // 💾 Uloženie bez parsovania stringu
                 SharedPreferences prefs = requireContext().getSharedPreferences("FitCalcPrefs", MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
+
+                String existingHistory = prefs.getString("bmiHistory", "");
+                String updatedHistory = existingHistory + String.format("%.2f - %s\n", bmi, bmiDesc);
+
                 editor.putFloat("lastBMI", (float) bmi);
                 editor.putString("lastBMItext", bmiDesc);
+                editor.putString("bmiHistory", updatedHistory);
+
+                editor.putString("inputWeight", vahaText);
+                editor.putString("inputHeight", vyskaText);
+                editor.putString("inputAge", vekText);
+
                 editor.apply();
             } else {
                 vysledokBMI.setText("Prosím, vyplňte všetky polia.");
