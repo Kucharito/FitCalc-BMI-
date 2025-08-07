@@ -19,16 +19,18 @@ public class BMIGaugeView extends View {
     @Override
     protected void onDraw(Canvas canvas){
         super.onDraw(canvas);
-        int width = getWidth();
-        int height = getHeight();
-        int radius = Math.min(width, height) / 2 - 60;
+        int availableWidth = getWidth() - getPaddingLeft() - getPaddingRight();
+        int availableHeight = getHeight() - getPaddingTop() - getPaddingBottom();
+
+// minimum of width and height, ale obmedzené na minimálnu hodnotu
+        int radius = Math.max(100, Math.min(availableWidth, availableHeight) / 2 - 60);
 
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(80);
 
-        RectF oval = new RectF(width / 2f - radius, height / 2f - radius,
-                width / 2f + radius, height / 2f + radius);
+        RectF oval = new RectF(availableWidth / 2f - radius, availableHeight / 2f - radius,
+                availableWidth / 2f + radius, availableHeight / 2f + radius);
 
         float [] treshholds = {16,17, 18.5f, 25, 30, 35, 40, 45};
         int []colors ={
@@ -57,8 +59,8 @@ public class BMIGaugeView extends View {
         float angle = (clampedBMI - minBMI) / (maxBMI - minBMI) * 180f; // Prevod BMI na uhol
         float angleRad = (float) Math.toRadians(angle + 180); // Prevod na radiány a posun o 180 stupňov
 
-        float centerX = width /2f;
-        float centerY = height / 2f;
+        float centerX = availableWidth /2f;
+        float centerY = availableHeight / 2f;
 
         float endX = (float)(centerX + (radius - 60) * Math.cos(angleRad));
         float endY = (float)(centerY + (radius - 60) * Math.sin(angleRad));

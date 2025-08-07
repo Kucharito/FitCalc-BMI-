@@ -86,12 +86,13 @@ public class DataFragment extends Fragment {
                 vysledokBMI.setText(bmiText);
                 textViewBMI.setText(bmiDesc);
 
-                // 💾 Uloženie bez parsovania stringu
                 SharedPreferences prefs = requireContext().getSharedPreferences("FitCalcPrefs", MODE_PRIVATE);
                 SharedPreferences.Editor editor = prefs.edit();
 
                 String existingHistory = prefs.getString("bmiHistory", "");
-                String updatedHistory = existingHistory + String.format("%.2f - %s\n", bmi, bmiDesc);
+                String oneRecord = String.format("BMI score: %.2f \n Popis: %s\n", bmi, bmiDesc);
+                String updatedHistory = existingHistory + oneRecord + ";;";
+
 
                 editor.putFloat("lastBMI", (float) bmi);
                 editor.putString("lastBMItext", bmiDesc);

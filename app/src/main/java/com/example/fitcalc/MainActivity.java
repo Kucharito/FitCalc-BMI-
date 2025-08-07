@@ -33,27 +33,38 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-    getSupportFragmentManager().beginTransaction()
-            .replace(R.id.fragment_container, new DataFragment())
-            .commit();
+        if(findViewById(R.id.data_fragment_container)!=null &&
+                findViewById(R.id.graph_fragment_container)!=null) {
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            Fragment selectedFragment = null;
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.data_fragment_container, new DataFragment())
+                    .replace(R.id.graph_fragment_container, new GraphFragment())
+                    .commit();
+        }
+        else{
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new DataFragment())
+                    .commit();
 
-            if (item.getItemId() == R.id.nav_data) {
-                selectedFragment = new DataFragment();
-            } else if (item.getItemId() == R.id.nav_graph) {
-                selectedFragment = new GraphFragment();
-            }
+            BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+            bottomNavigationView.setOnItemSelectedListener(item -> {
+                Fragment selectedFragment = null;
 
-            if (selectedFragment != null) {
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, selectedFragment)
-                        .commit();
-            }
-            return true;
-        });
+                if (item.getItemId() == R.id.nav_data) {
+                    selectedFragment = new DataFragment();
+                } else if (item.getItemId() == R.id.nav_graph) {
+                    selectedFragment = new GraphFragment();
+                }
+
+                if (selectedFragment != null) {
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.fragment_container, selectedFragment)
+                            .commit();
+                }
+                return true;
+            });
+        }
+
     }
 
     @Override
