@@ -23,6 +23,8 @@ public class GraphFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.graph_fragment, container, false);
 
+
+        BMIGaugeView bmiGaugeView = view.findViewById(R.id.bmiGauge);
         RecyclerView recyclerView = view.findViewById(R.id.historyRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -33,6 +35,7 @@ public class GraphFragment extends Fragment {
         List<BMIRecord> bmiRecords = new ArrayList<>();
         if (!history.equals("No history available.")) {
             String[] records = history.split(";;");
+
             for (String record : records) {
                 bmiRecords.add(new BMIRecord(record.trim()));
             }
@@ -40,6 +43,11 @@ public class GraphFragment extends Fragment {
 
         BMIHistoryAdapter adapter = new BMIHistoryAdapter(bmiRecords);
         recyclerView.setAdapter(adapter);
+
+        adapter.setOnItemClickListener(record -> {
+            float bmiValue = extractBMIFromRecord(record.getValue());
+            bmiGaugeView.setBmiValue(bmiValue);
+        });
 
         Button removeHistory;
         removeHistory = view.findViewById(R.id.clearHistoryButton);
@@ -51,9 +59,22 @@ public class GraphFragment extends Fragment {
 
             bmiRecords.clear();
             adapter.notifyDataSetChanged();
+            bmiGaugeView.setBmiValue(0.0f);
         });
 
         return view;
+    }
+
+    public float extractBMIFromRecord(String record) {
+        try {
+            String number = record.split("BMI score:")[1]
+                    .trim()
+                    .split("\\s+")[0]
+                    .replace(",", ".");
+            return Float.parseFloat(number);
+        } catch (Exception e) {
+            return 0.0f;
+        }
     }
 
 

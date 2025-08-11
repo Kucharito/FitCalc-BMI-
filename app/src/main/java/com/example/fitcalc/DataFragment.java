@@ -77,6 +77,8 @@ public class DataFragment extends Fragment {
             if (!vahaText.isEmpty() && !vyskaText.isEmpty() && !vekText.isEmpty()) {
                 double hmotnost = Double.parseDouble(vahaText);
                 double vyskaCm = Double.parseDouble(vyskaText);
+
+
                 double vyskaM = vyskaCm / 100;
                 double bmi = hmotnost / (vyskaM * vyskaM);
 
@@ -90,7 +92,7 @@ public class DataFragment extends Fragment {
                 SharedPreferences.Editor editor = prefs.edit();
 
                 String existingHistory = prefs.getString("bmiHistory", "");
-                String oneRecord = String.format("BMI score: %.2f \n Popis: %s\n", bmi, bmiDesc);
+                String oneRecord = String.format("BMI score: %.2f \n%s\nVáha: %s\nVýška: %s\nVek: %s", bmi, bmiDesc, vahaText, vyskaText, vekText);
                 String updatedHistory = existingHistory + oneRecord + ";;";
 
 

@@ -76,4 +76,9 @@ public class BMIGaugeView extends View {
         canvas.drawText("BMI = " + String.format("%.1f", bmi), centerX, centerY + 200, paint);
 
     }
+
+    public void setBmiValue(float bmiValue) {
+        this.bmi = bmiValue;
+        invalidate();
+    }
 }

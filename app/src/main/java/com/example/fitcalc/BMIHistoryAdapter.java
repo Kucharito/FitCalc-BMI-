@@ -3,15 +3,25 @@ package com.example.fitcalc;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class BMIHistoryAdapter extends RecyclerView.Adapter<BMIHistoryAdapter.ViewHolder>
-{
+public class BMIHistoryAdapter extends RecyclerView.Adapter<BMIHistoryAdapter.ViewHolder> {
+
     private final List<BMIRecord> bmiRecords;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(BMIRecord record);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public BMIHistoryAdapter(List<BMIRecord> bmiRecords) {
         this.bmiRecords = bmiRecords;
@@ -37,11 +47,17 @@ public class BMIHistoryAdapter extends RecyclerView.Adapter<BMIHistoryAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, int position) {
         BMIRecord record = bmiRecords.get(position);
         holder.textView.setText(record.getValue());
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(record);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return bmiRecords.size();
     }
-
 }
+
