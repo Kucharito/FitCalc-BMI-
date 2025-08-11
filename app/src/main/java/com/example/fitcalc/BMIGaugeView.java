@@ -32,28 +32,28 @@ public class BMIGaugeView extends View {
         RectF oval = new RectF(availableWidth / 2f - radius, availableHeight / 2f - radius,
                 availableWidth / 2f + radius, availableHeight / 2f + radius);
 
-        float [] treshholds = {16,17, 18.5f, 25, 30, 35, 40, 45};
+        float [] thresholds = {16,17, 18.5f, 25, 30, 35, 40, 45};
         int []colors ={
                 Color.parseColor("#FF7043"), // very underweight
                 Color.parseColor("#FFEB3B"), // underweight
-                Color.parseColor("#FFF176"), // mild underweight
-                Color.parseColor("#66BB6A"), // normal
-                Color.parseColor("#FFEB3B"), // overweight
-                Color.parseColor("#EF9A9A"), // obezita 1
+                Color.parseColor("#66BB6A"), // mild underweight
+                Color.parseColor("#fff176"), // normal// overweight
+                Color.parseColor("#FFD54F"), // obezita 1
                 Color.parseColor("#E57373"), // obezita 2
                 Color.parseColor("#D32F2F") // obezita 3
         };
 
+        float minBMI = 16;
+        float maxBMI = 45;
         float startAngle = 180;
-        for (int i=0;i<treshholds.length-1;i++){
-            float sweep= (treshholds[i+1] - treshholds[i]) / 45f * 180f; // 10 je faktor pre prevod BMI na uhol
+        for (int i = 0; i < thresholds.length - 1; i++) {
+            float sweep = (thresholds[i + 1] - thresholds[i]) / (maxBMI - minBMI) * 180f;
             paint.setColor(colors[i]);
             canvas.drawArc(oval, startAngle, sweep, false, paint);
             startAngle += sweep;
         }
 
-        float minBMI = 16;
-        float maxBMI = 45;
+
         float clampedBMI = Math.max(minBMI, Math.min(bmi, maxBMI));
 
         float angle = (clampedBMI - minBMI) / (maxBMI - minBMI) * 180f; // Prevod BMI na uhol

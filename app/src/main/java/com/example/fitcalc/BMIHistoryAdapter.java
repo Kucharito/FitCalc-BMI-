@@ -17,6 +17,8 @@ public class BMIHistoryAdapter extends RecyclerView.Adapter<BMIHistoryAdapter.Vi
 
     public interface OnItemClickListener {
         void onItemClick(BMIRecord record);
+
+        void onItemLongClick(BMIRecord record);
     }
 
     public void setOnItemClickListener(OnItemClickListener listener) {
@@ -52,6 +54,13 @@ public class BMIHistoryAdapter extends RecyclerView.Adapter<BMIHistoryAdapter.Vi
             if (listener != null) {
                 listener.onItemClick(record);
             }
+        });
+
+        holder.itemView.setOnLongClickListener(v ->{
+            if (listener != null) {
+                listener.onItemLongClick(record);
+            }
+            return true;
         });
     }
 

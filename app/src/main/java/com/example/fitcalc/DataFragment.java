@@ -56,7 +56,6 @@ public class DataFragment extends Fragment {
         vek.setText(savedAge);
 
 
-        // Obnovenie posledného BMI pri štarte aplikácie
         float lastBMI = sharedPreferences.getFloat("lastBMI", 0.0f);
         String lastBMItext = sharedPreferences.getString("lastBMItext", "Nebol vypočítaný BMI.");
         if (lastBMI != 0.0f) {
@@ -74,10 +73,24 @@ public class DataFragment extends Fragment {
             String vyskaText = vyska.getText().toString();
             String vekText = vek.getText().toString();
 
-            if (!vahaText.isEmpty() && !vyskaText.isEmpty() && !vekText.isEmpty()) {
+            boolean isValid = true;
+
+            if(vahaText.isEmpty() || Double.parseDouble(vahaText) <= 0 ) {
+                vaha.setError("Zadajte platnú váhu.");
+                isValid = false;
+            }
+            if(vyskaText.isEmpty() || Double.parseDouble(vyskaText) <=0){
+                vyska.setError("Zadajte platnú výšku.");
+                isValid = false;
+            }
+            if(vekText.isEmpty() || Integer.parseInt(vekText) <= 0){
+                vek.setError("Zadajte platný vek.");
+                isValid = false;
+            }
+
+            if (isValid) {
                 double hmotnost = Double.parseDouble(vahaText);
                 double vyskaCm = Double.parseDouble(vyskaText);
-
 
                 double vyskaM = vyskaCm / 100;
                 double bmi = hmotnost / (vyskaM * vyskaM);

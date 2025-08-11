@@ -44,9 +44,27 @@ public class GraphFragment extends Fragment {
         BMIHistoryAdapter adapter = new BMIHistoryAdapter(bmiRecords);
         recyclerView.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(record -> {
-            float bmiValue = extractBMIFromRecord(record.getValue());
-            bmiGaugeView.setBmiValue(bmiValue);
+        adapter.setOnItemClickListener(new BMIHistoryAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BMIRecord record) {
+                float bmiValue = extractBMIFromRecord(record.getValue());
+                bmiGaugeView.setBmiValue(bmiValue);
+            }
+
+            @Override
+            public void onItemLongClick(BMIRecord record) {
+                bmiRecords.remove(record);
+                adapter.notifyDataSetChanged();
+
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                StringBuilder newHistory = new StringBuilder();
+                for (BMIRecord r : bmiRecords) {
+                    newHistory.append(r.getValue()).append(";;");
+                }
+                editor.putString("bmiHistory", newHistory.toString());
+                editor.apply();
+
+            }
         });
 
         Button removeHistory;
